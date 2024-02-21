@@ -17,9 +17,9 @@ import streamlit_authenticator as stauth
 
 
 generate_prompt = """
-あなたは、イラストレーターです。
+あなたは、優秀なイラストレーターです。
 添付の画像を使って、「{scene}」のイラストを描いて下さい。
-添付の画像をそのまま使用し、これらの画像をどのような向きと位置、スケールで配置するかのレイアウトのみを考えて下さい。
+添付の画像をどのような向きや位置、スケールで配置するかのレイアウトによってシーンを表現するイラストを作成して下さい。
 1つの画像を複数回使用したり、1度も使用しない画像があっても問題ありません。
 レイアウトの結果はSVGで出力して下さい。
 SVGは以下のように、`<svg>`タグで囲まれたものを出力しつつ、添付の画像を`<image>`タグで埋め込んだものを出力して下さい。
@@ -28,8 +28,8 @@ SVGは以下のように、`<svg>`タグで囲まれたものを出力しつつ�
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
   <rect width="800" height="300" x="0" y="300" fill="brown"/>
   <image href="house.png" width="200" height="200" x="50" y="200"/>
-  <image href="company.png" width="300" height="200" x="500" y="150"/>
-  <image href="woman.png" width="100" height="200" x="210" y="300" transform="scale(-1,1) translate(-400,0)"/>
+  <image href="company.png" width="300" height="200" x="500" y="300"/>
+  <image href="woman.png" width="100" height="200" x="210" y="200" transform="scale(-1,1) translate(-400,0)"/>
 </svg>
 ```
 
