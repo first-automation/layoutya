@@ -1,5 +1,9 @@
 # LayoutYa
 
+## Demo (x4)
+
+![demo](demo.gif)
+
 ## Installation
 
 ```sh
