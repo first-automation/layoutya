@@ -102,7 +102,7 @@ class ImageData(BaseModel):
 class IllustSynthesizer:
     """イラストを合成して、新しいイラストを生成する"""
 
-    def __init__(self, model: str = "gpt-4-vision-preview") -> None:
+    def __init__(self, model: str = "gpt-4o-2024-05-13") -> None:
         self._model = model
         self._client = OpenAI()
 
@@ -110,7 +110,6 @@ class IllustSynthesizer:
         self,
         prompt: str,
         base64_images: list[ImageData],
-        detail: Literal["auto", "low", "high"] = "high",
     ) -> Optional[str]:
         content: Sequence[ChatCompletionContentPartTextParam | ChatCompletionContentPartImageParam] = [
             ChatCompletionContentPartTextParam(type="text", text=prompt),
@@ -119,7 +118,6 @@ class IllustSynthesizer:
                 type="image_url",
                 image_url={
                     "url": f"data:image/{base64_image.type};base64,{base64_image.data}",
-                    "detail": detail,
                 },
             )
             for base64_image in base64_images
@@ -155,10 +153,9 @@ class IllustSynthesizer:
         self,
         scene: str,
         base64_images: list[ImageData],
-        detail: Literal["auto", "low", "high"] = "high",
     ) -> str:
         prompt = generate_prompt.format(scene=scene, image_filenames="\n".join(image.filename for image in base64_images))
-        return self._run(prompt, base64_images, detail)
+        return self._run(prompt, base64_images)
 
     def refine(
         self,
@@ -166,7 +163,6 @@ class IllustSynthesizer:
         previous_svg_code: str,
         scene: str,
         base64_images: list[ImageData],
-        detail: Literal["auto", "low", "high"] = "high",
         used_adjusting_points: Optional[list[str]] = None,
     ) -> str:
         if used_adjusting_points is None:
@@ -180,7 +176,7 @@ class IllustSynthesizer:
             image_filenames="\n".join([previous_rendered_image.filename] + [image.filename for image in base64_images]),
             adjusting_points="\n".join(["* レンダリングされたSVGで、" + point for point in used_adjusting_points]),
         )
-        return self._run(prompt, [previous_rendered_image] + base64_images, detail)
+        return self._run(prompt, [previous_rendered_image] + base64_images)
 
 
 def load_images(image_paths: list[str]) -> list[ImageData]:
